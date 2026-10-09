@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # 1. Base de Datos PostgreSQL
+  database:
+    image: postgres:16-alpine
+    container_name: smartcampus-db
+    restart: always
+    environment:
+      POSTGRES_USER: campus_user
+      POSTGRES_PASSWORD: campus_pass
+      POSTGRES_DB: campus_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - campus-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U campus_user -d campus_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. API Backend (FastAPI)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: smartcampus-backend
+    restart: on-failure
+    environment:
+      DB_HOST: database
+      DB_PORT: "5432"
+      DB_NAME: campus_db
+      DB_USER: campus_user
+      DB_PASSWORD: campus_pass
+    ports:
+      - "8000:8000"
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - campus-net
+
+  # 3. Interfaz Web (Frontend Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: smartcampus-frontend
+    restart: always
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - campus-net
+
+# Red interna que conecta los tres contenedores
+networks:
+  campus-net:
+    driver: bridge
+
+# Volumen gestionado para persistencia de la base de datos
+volumes:
+  postgres_data:
