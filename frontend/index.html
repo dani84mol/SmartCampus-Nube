@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartCampus - Gestión de Espacios</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header>
+    <h1>SmartCampus Solutions</h1>
+    <p>Plataforma Universitaria de Gestión de Espacios y Aulas</p>
+    <div>
+      Estado del Backend: <span id="backend-status" class="status-badge">Comprobando...</span>
+    </div>
+  </header>
+
+  <main class="grid">
+    <!-- Columna Aulas -->
+    <section class="card">
+      <h2>Aulas Disponibles</h2>
+      <div id="rooms-list">Cargando aulas...</div>
+    </section>
+
+    <!-- Columna Reservas -->
+    <section class="card">
+      <h2>Reservas Realizadas</h2>
+      <div id="bookings-list">Cargando reservas...</div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
