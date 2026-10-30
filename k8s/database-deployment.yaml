@@ -35,10 +35,15 @@ spec:
                   name: campus-secrets
                   key: POSTGRES_DB
           volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
             - name: init-script
               mountPath: /docker-entrypoint-initdb.d/init.sql
               subPath: init.sql
       volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
         - name: init-script
           configMap:
             name: db-init-script

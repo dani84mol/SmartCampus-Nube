@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
   <header>
     <h1>SmartCampus Solutions</h1>
     <p>Plataforma Universitaria de Gestión de Espacios y Aulas</p>
@@ -15,21 +14,61 @@
       Estado del Backend: <span id="backend-status" class="status-badge">Comprobando...</span>
     </div>
   </header>
-
   <main class="grid">
     <!-- Columna Aulas -->
     <section class="card">
       <h2>Aulas Disponibles</h2>
+      
+      <form id="room-form" class="app-form" onsubmit="handleRoomSubmit(event)">
+        <h3 id="room-form-title">Añadir Nueva Aula</h3>
+        <input type="hidden" id="room-id" value="">
+        
+        <div class="form-group">
+          <input type="text" id="room-name" placeholder="Nombre (ej. Aula 101)" required>
+          <input type="text" id="room-building" placeholder="Edificio (ej. Edificio A)" required>
+          <input type="number" id="room-capacity" placeholder="Capacidad" min="1" required>
+          <input type="text" id="room-equipment" placeholder="Equipamiento (separado por comas)">
+          
+          <div class="form-actions">
+            <button type="submit" id="room-submit-btn" class="btn btn-primary">Guardar Aula</button>
+            <button type="button" id="room-cancel-btn" onclick="resetRoomForm()" class="btn btn-secondary" style="display:none;">Cancelar</button>
+          </div>
+        </div>
+      </form>
+
       <div id="rooms-list">Cargando aulas...</div>
     </section>
 
     <!-- Columna Reservas -->
     <section class="card">
       <h2>Reservas Realizadas</h2>
+
+      <form id="booking-form" class="app-form" onsubmit="handleBookingSubmit(event)">
+        <h3 id="booking-form-title">Añadir Nueva Reserva</h3>
+        <input type="hidden" id="booking-id" value="">
+
+        <div class="form-group">
+          <select id="booking-room" required>
+            <option value="">Cargando aulas...</option>
+          </select>
+          <input type="email" id="booking-user" placeholder="Correo de usuario" required>
+          <input type="date" id="booking-date" required>
+          
+          <div class="time-group">
+            <label>Inicio: <input type="time" id="booking-start" required></label>
+            <label>Fin: <input type="time" id="booking-end" required></label>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" id="booking-submit-btn" class="btn btn-primary">Guardar Reserva</button>
+            <button type="button" id="booking-cancel-btn" onclick="resetBookingForm()" class="btn btn-secondary" style="display:none;">Cancelar</button>
+          </div>
+        </div>
+      </form>
+
       <div id="bookings-list">Cargando reservas...</div>
     </section>
   </main>
-
   <script src="app.js"></script>
 </body>
 </html>
